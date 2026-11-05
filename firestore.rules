@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Tout passe par les fonctions serveur (firebase-admin) : aucun accès direct depuis un navigateur.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

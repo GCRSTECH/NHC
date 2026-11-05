@@ -1,0 +1,255 @@
+/* ===== Jetons de design : noir, sang, os, cendre ===== */
+:root {
+  --ink-0: #070404;
+  --ink-1: #0f0808;
+  --ink-2: #1a0d0d;
+  --ink-3: #2a1515;
+  --blood-dark: #5a0a10;
+  --blood: #9e1019;
+  --blood-bright: #d41f2b;
+  --bone: #e6d8b8;
+  --bone-dim: #b9a98a;
+  --paper: #d9c9a2;
+  --paper-dark: #bda97a;
+  --paper-ink: #2a1a14;
+  --line: rgba(230, 216, 184, 0.16);
+  --focus: #ffd2a8;
+  --ok: #8fc79a;
+
+  --font-display: 'Butcherman', 'Creepster', Impact, 'Arial Black', sans-serif;
+  --font-letter: 'IM Fell English', Georgia, 'Times New Roman', serif;
+  --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --ease: cubic-bezier(0.22, 0.8, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ink-0);
+  color: var(--bone);
+  font-family: var(--font-letter);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+/* Vignette sanglante + grain de pellicule, fixes derrière tout */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 28%, rgba(90, 10, 16, 0.3), transparent 60%),
+    radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, 0.88) 100%);
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+a {
+  color: var(--bone-dim);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* ===== Gouttes de sang (une seule coulée au chargement) ===== */
+.drips {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.drips::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: linear-gradient(var(--blood-dark), var(--blood));
+  box-shadow: 0 2px 14px rgba(158, 16, 25, 0.5);
+}
+
+.drip {
+  position: absolute;
+  top: 0;
+  height: var(--h);
+  border-radius: 0 0 999px 999px;
+  background: linear-gradient(var(--blood-dark), var(--blood) 60%, var(--blood-bright));
+  transform-origin: top;
+  animation: drip-run 6s var(--ease) both;
+}
+
+@keyframes drip-run {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* ===== Boutons ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.6rem 1.25rem;
+  border: 1px solid var(--blood);
+  border-radius: 4px;
+  background: var(--blood-dark);
+  color: var(--bone);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.2s var(--ease),
+    transform 0.15s var(--ease),
+    border-color 0.2s var(--ease);
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--blood);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--line);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--ink-3);
+  border-color: var(--bone-dim);
+}
+
+.btn-danger {
+  background: transparent;
+  border-color: var(--blood-bright);
+  color: var(--blood-bright);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: var(--blood-dark);
+  color: var(--bone);
+}
+
+.btn-small {
+  min-height: 44px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.95rem;
+}
+
+/* ===== Pages simples (accueil, 404) ===== */
+.center-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 5rem 1.25rem 2.5rem;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3.2rem, 14vw, 7.5rem);
+  line-height: 0.95;
+  color: var(--blood-bright);
+  text-shadow:
+    0 4px 0 var(--blood-dark),
+    0 0 36px rgba(212, 31, 43, 0.35);
+}
+
+.title-sm {
+  font-size: clamp(2.4rem, 9vw, 4.5rem);
+}
+
+.subtitle {
+  margin: 0 0 1.25rem;
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--bone-dim);
+}
+
+.lead {
+  max-width: 34rem;
+  margin: 0 0 1.5rem;
+  color: var(--bone);
+}
+
+.faint-link {
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--bone-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+}

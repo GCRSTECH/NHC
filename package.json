@@ -1,0 +1,26 @@
+{
+  "name": "night-has-come-erse",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Night Has Come ERSE Edition — attribution des rôles par lettres scellées à usage unique",
+  "scripts": {
+    "dev": "vite",
+    "dev:full": "vercel dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node scripts/test-roles.mjs"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11"
+  }
+}

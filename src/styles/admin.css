@@ -1,0 +1,291 @@
+/* ===== Espace maître du jeu : lisible avant tout ===== */
+.admin {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 4.5rem 1rem 4rem;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.admin-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 7vw, 3rem);
+  color: var(--blood-bright);
+  text-shadow: 0 3px 0 var(--blood-dark);
+}
+
+.panel {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(15, 8, 8, 0.88);
+}
+
+.panel.narrow {
+  max-width: 26rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.panel h2 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  color: var(--bone);
+}
+
+.admin label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+.admin input[type='text'],
+.admin input[type='password'],
+.admin input[type='number'],
+.admin input:not([type]),
+.admin textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--ink-0);
+  color: var(--bone);
+  font: inherit;
+}
+
+.admin textarea {
+  resize: vertical;
+}
+
+.admin input::placeholder,
+.admin textarea::placeholder {
+  color: var(--bone-dim);
+  opacity: 0.7;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+}
+
+.field-help,
+.muted {
+  margin: 0.35rem 0 0;
+  font-size: 0.95rem;
+  color: var(--bone-dim);
+}
+
+.msg {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.msg-error {
+  border-color: var(--blood-bright);
+  background: rgba(158, 16, 25, 0.18);
+  color: #ffb4ba;
+}
+
+/* ----- Parties précédentes ----- */
+.game-list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.game-btn {
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.game-btn.is-current {
+  border-color: var(--blood-bright);
+  background: var(--ink-3);
+}
+
+/* ----- Partie courante ----- */
+.cur-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cur-head h2 {
+  margin-bottom: 0.25rem;
+}
+
+.cur-head .muted {
+  margin: 0;
+}
+
+.cur-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.check input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--blood);
+}
+
+.role-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.role {
+  display: inline-block;
+  padding: 0.15rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.role-loup {
+  border-color: var(--blood-bright);
+  color: #ff9aa1;
+}
+
+.role-voyante {
+  border-color: #8f7fd6;
+  color: #c9c0ff;
+}
+
+.role-chevalier {
+  border-color: #6fa3c9;
+  color: #b4dcf5;
+}
+
+.role-villageois {
+  border-color: var(--bone-dim);
+  color: var(--bone);
+}
+
+.letter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.letter-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--ink-1);
+}
+
+.lc-head {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.lc-role {
+  width: 100%;
+  margin: 0;
+}
+
+.badge {
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid;
+  font-size: 0.9rem;
+}
+
+.badge.is-sealed {
+  border-color: var(--bone-dim);
+  color: var(--bone-dim);
+}
+
+.badge.is-opened {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+.qr {
+  display: block;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.qr-empty {
+  background: var(--ink-3);
+}
+
+.link-field {
+  font-size: 0.85rem !important;
+  text-overflow: ellipsis;
+}
+
+.lc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .panel {
+    padding: 1.1rem;
+  }
+
+  .cur-actions .btn {
+    flex: 1 1 100%;
+  }
+}

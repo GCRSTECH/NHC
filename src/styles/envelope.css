@@ -1,0 +1,445 @@
+/* ===== Page de la lettre ===== */
+.letter-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.75rem;
+  padding: 4.5rem 1rem 2.5rem;
+}
+
+.hint {
+  min-height: 3.2rem;
+  max-width: 28rem;
+  margin: 0;
+  text-align: center;
+  font-style: italic;
+  color: var(--bone-dim);
+}
+
+.notice,
+.burned {
+  width: min(92vw, 30rem);
+  padding: 2rem 1.75rem;
+  text-align: center;
+  border: 1px solid var(--line);
+  background: var(--ink-1);
+}
+
+.notice-title {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 6vw, 2.2rem);
+  line-height: 1.15;
+  color: var(--blood-bright);
+}
+
+.notice p:last-child,
+.burned p:last-child {
+  margin-bottom: 0;
+}
+
+.notice .btn {
+  margin-top: 1rem;
+}
+
+/* Lettre brûlée : bords calcinés et lueur de braise */
+.burned {
+  position: relative;
+  border: 0;
+  background:
+    radial-gradient(circle at 18% 96%, rgba(255, 110, 40, 0.28), transparent 38%),
+    radial-gradient(circle at 86% 6%, rgba(255, 70, 30, 0.2), transparent 34%),
+    linear-gradient(180deg, #1d1311, #0c0706);
+  color: var(--bone-dim);
+  clip-path: polygon(
+    0 3%, 5% 0, 12% 2%, 20% 0, 31% 3%, 42% 0, 53% 2%, 64% 0, 75% 3%, 86% 1%, 94% 3%, 100% 0,
+    99% 14%, 100% 27%, 98% 41%, 100% 55%, 99% 70%, 100% 84%, 98% 100%,
+    90% 98%, 80% 100%, 68% 97%, 56% 100%, 44% 98%, 32% 100%, 20% 97%, 9% 100%, 0 98%,
+    2% 84%, 0 70%, 2% 55%, 0 40%, 2% 26%, 0 12%
+  );
+}
+
+/* ===== Enveloppe (CSS pur) ===== */
+.env-scene {
+  --w: min(88vw, 440px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* place pour le rabat et la lettre qui montent au-dessus de l'enveloppe */
+  padding-top: calc(var(--w) * 0.4);
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.6s var(--ease),
+    filter 0.6s var(--ease);
+}
+
+.env-scene.is-done {
+  opacity: 0.12;
+  filter: blur(3px);
+  transform: scale(0.94);
+  pointer-events: none;
+}
+
+.envelope {
+  --env-back: #34090d;
+  --env-front: #521016;
+  --env-front-2: #3d0b10;
+  --env-flap: #6a141b;
+  --env-flap-2: #4a0e13;
+
+  position: relative;
+  width: var(--w);
+  height: calc(var(--w) * 0.64);
+  perspective: 1100px;
+  filter: drop-shadow(0 26px 30px rgba(0, 0, 0, 0.85));
+}
+
+.env-back,
+.env-front,
+.env-flap,
+.env-letter {
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+.env-back {
+  inset: 0;
+  z-index: 0;
+  border-radius: 3px;
+  background: linear-gradient(160deg, var(--env-back), #1d0508);
+}
+
+/* Poche avant : tout l'enveloppe sauf le triangle du haut (couvert par le rabat) */
+.env-front {
+  inset: 0;
+  z-index: 3;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--env-front), var(--env-front-2));
+  clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%);
+}
+
+.env-folds {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.env-folds path {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.5);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.env-to {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 11%;
+  margin: 0;
+  padding: 0 1rem;
+  text-align: center;
+  font-style: italic;
+  font-size: clamp(1.1rem, 4.8vw, 1.5rem);
+  line-height: 1.2;
+  color: var(--bone);
+  text-shadow: 0 1px 0 #000;
+  overflow-wrap: anywhere;
+}
+
+/* Rabat : se retourne vers le haut, puis passe derrière la lettre */
+.env-flap {
+  top: 0;
+  height: 54%;
+  z-index: 4;
+  transform-origin: top center;
+  background: linear-gradient(180deg, var(--env-flap), var(--env-flap-2));
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transition:
+    transform 0.9s var(--ease-inout),
+    z-index 0s linear 0.45s,
+    background 0.5s var(--ease);
+}
+
+.is-open .env-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+  background: linear-gradient(180deg, #2a0609, #3d0b10);
+}
+
+/* Lettre miniature qui sort de l'enveloppe */
+.env-letter {
+  left: 5%;
+  width: 90%;
+  bottom: 6%;
+  height: 88%;
+  z-index: 2;
+  border-radius: 2px;
+  background:
+    radial-gradient(circle at 78% 20%, rgba(158, 16, 25, 0.6) 0 7%, transparent 8%),
+    radial-gradient(circle at 24% 38%, rgba(158, 16, 25, 0.35) 0 4%, transparent 5%),
+    repeating-linear-gradient(180deg, transparent 0 15px, rgba(42, 26, 20, 0.3) 15px 16px),
+    linear-gradient(180deg, var(--paper), var(--paper-dark));
+  transition: transform 0.95s var(--ease);
+}
+
+.is-rise .env-letter {
+  transform: translateY(-62%);
+}
+
+/* Sceau de cire */
+.env-seal {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  z-index: 6;
+  width: 68px;
+  height: 68px;
+  margin: -34px 0 0 -34px;
+  padding: 0;
+  border: 0;
+  border-radius: 52% 46% 54% 48% / 48% 54% 46% 52%;
+  display: grid;
+  place-items: center;
+  font-size: 1.9rem;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.5);
+  background: radial-gradient(circle at 35% 30%, var(--blood-bright), var(--blood) 55%, var(--blood-dark));
+  box-shadow:
+    inset 0 -5px 9px rgba(0, 0, 0, 0.5),
+    inset 0 3px 5px rgba(255, 255, 255, 0.18),
+    0 5px 12px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  animation: seal-pulse 2.6s ease-in-out infinite;
+}
+
+.env-seal:disabled {
+  cursor: default;
+}
+
+.is-breaking .env-seal,
+.is-open .env-seal {
+  pointer-events: none;
+  animation: seal-break 0.55s var(--ease) forwards;
+}
+
+@keyframes seal-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow:
+      inset 0 -5px 9px rgba(0, 0, 0, 0.5),
+      inset 0 3px 5px rgba(255, 255, 255, 0.18),
+      0 5px 12px rgba(0, 0, 0, 0.7),
+      0 0 0 0 rgba(212, 31, 43, 0.5);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow:
+      inset 0 -5px 9px rgba(0, 0, 0, 0.5),
+      inset 0 3px 5px rgba(255, 255, 255, 0.18),
+      0 5px 12px rgba(0, 0, 0, 0.7),
+      0 0 0 14px rgba(212, 31, 43, 0);
+  }
+}
+
+@keyframes seal-break {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  30% {
+    transform: scale(1.18) rotate(-7deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(52px) rotate(26deg) scale(0.65);
+    opacity: 0;
+  }
+}
+
+/* ===== Lecture : la lettre déployée ===== */
+.reading {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow-y: auto;
+  display: flex;
+  padding: 3rem 1rem 3rem;
+  background: radial-gradient(ellipse at 50% 18%, rgba(90, 10, 16, 0.4), rgba(7, 4, 4, 0.97) 72%);
+  animation: fade-in 0.5s var(--ease) both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.sheet-wrap {
+  width: min(100%, 36rem);
+  margin: auto;
+  filter: drop-shadow(0 28px 36px rgba(0, 0, 0, 0.85));
+  animation: sheet-in 0.9s var(--ease) both;
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(70px) scale(0.92) rotate(-1.2deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sheet {
+  position: relative;
+  padding: 2.75rem 2.1rem 3rem;
+  color: var(--paper-ink);
+  background:
+    radial-gradient(circle at 10% 7%, rgba(120, 12, 18, 0.5) 0 4%, transparent 5%),
+    radial-gradient(circle at 92% 62%, rgba(120, 12, 18, 0.22) 0 9%, transparent 10%),
+    radial-gradient(ellipse at 50% 0, rgba(90, 40, 20, 0.28), transparent 60%),
+    radial-gradient(ellipse at 50% 100%, rgba(90, 40, 20, 0.35), transparent 55%),
+    linear-gradient(180deg, var(--paper), var(--paper-dark));
+  /* bord inférieur déchiré */
+  clip-path: polygon(
+    0 0, 100% 0, 100% 96%, 96% 98.4%, 92% 95.6%, 87% 98.6%, 82% 96%, 76% 99%, 70% 96.2%, 64% 98.8%,
+    58% 95.8%, 52% 98.4%, 46% 96%, 40% 99%, 34% 96.4%, 28% 98.6%, 22% 95.8%, 16% 98.4%, 10% 96%, 5% 98.8%, 0 96.4%
+  );
+}
+
+.sheet:focus {
+  outline: none;
+}
+
+.splatter {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 46%;
+  fill: var(--blood);
+  opacity: 0.78;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.sheet > *:not(.splatter) {
+  position: relative;
+}
+
+.sheet-hello {
+  margin: 0 0 0.25rem;
+  font-size: 1.3rem;
+  font-style: italic;
+}
+
+.sheet-verdict {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.3rem, 10vw, 3.4rem);
+  line-height: 1.05;
+  color: var(--blood);
+  text-shadow: 1px 2px 0 rgba(0, 0, 0, 0.28);
+}
+
+.sheet-glyph {
+  margin: 0.6rem 0;
+  font-size: 3.2rem;
+  line-height: 1;
+}
+
+.sheet-body {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.sheet-pack {
+  padding: 0.65rem 0.9rem;
+  border-left: 3px solid var(--blood);
+  background: rgba(90, 10, 16, 0.12);
+  font-size: 1.15rem;
+}
+
+.sheet-rules {
+  margin: 1.25rem 0;
+  padding-left: 1.4rem;
+  font-size: 1.1rem;
+}
+
+.sheet-rules li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.3rem;
+}
+
+.sheet-rules li::marker {
+  content: '† ';
+  color: var(--blood);
+}
+
+.sheet-warning {
+  margin: 1.5rem 0 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(42, 26, 20, 0.5);
+  font-size: 1.05rem;
+  font-style: italic;
+}
+
+.btn-sheet {
+  background: var(--paper-ink);
+  border-color: var(--paper-ink);
+  color: var(--paper);
+}
+
+.btn-sheet:hover:not(:disabled) {
+  background: var(--blood);
+  border-color: var(--blood);
+  color: var(--bone);
+}
+
+.btn-sheet:focus-visible {
+  outline-color: var(--blood);
+}
+
+/* L'encre apparaît ligne après ligne : le seul moment orchestré de la page */
+.ink {
+  opacity: 0;
+  animation: ink-in 0.9s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 0.3s + 0.55s);
+}
+
+@keyframes ink-in {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .sheet {
+    padding: 2.25rem 1.4rem 2.6rem;
+  }
+
+  .env-seal {
+    width: 62px;
+    height: 62px;
+    margin: -31px 0 0 -31px;
+  }
+}
